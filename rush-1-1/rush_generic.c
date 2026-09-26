@@ -1,3 +1,5 @@
+#include <unistd.h>
+
 int corner_ind(int line, int col, int x, int y)
 {
     int top = (line == 0);
@@ -34,7 +36,7 @@ int border_ind(int line, int col, int x, int y)
     return -1; // pas un bord
 }
 
-int index(int line, int col, int x, int y)
+int ind_case(int line, int col, int x, int y)
 {
     int index = corner_ind(line, col, x, y); // est ce un coin ?
 
@@ -54,8 +56,8 @@ void write_line(int line, int x, int y, const char *chars)
 {
     for (int i = 0; i <= x - 1; i++) // parcour toute les colonnes de la ligne
     {
-        int ind_char = index(line, i, x, y); // quelle caractere utiliser
-        write(1, chars[ind_char], 1);
+        int ind_char = ind_case(line, i, x, y); // quelle caractere utiliser
+        write(1, &chars[ind_char], 1);
     }
     write(1, "\n", 1); // reviens a la ligne
 }
@@ -65,7 +67,7 @@ void rush_generic(int x, int y, char *chars)
     if (x <= 0 || y <= 0)
     {
         write(1, "Invalid size\n", 13);
-        return 0;
+        return;
     }
     for (int i = 0; i <= y - 1; i++)
         write_line(i, x, y, chars);
